@@ -612,6 +612,60 @@
             color: #666;
         }
 
+        /* Chat Messages */
+        .chat-messages {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+        }
+
+        .message.sent {
+            background: #3b82f6;
+            color: white;
+            margin-left: auto;
+            max-width: 80%;
+        }
+
+        .message.received {
+            background: #ffffff;
+            max-width: 80%;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .chat-input button {
+            padding: 12px 20px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
         /* About Page */
         .about-section {
             background: #ffffff;
@@ -1327,14 +1381,36 @@
         <div class="content-page" id="chatPage">
             <h2 class="page-title">Chat</h2>
             
-            <div class="chat-item">
+            <div class="chat-item" onclick="openChat('Support Channel')">
                 <div class="chat-name">Support Channel</div>
                 <div class="chat-last-message">Direct support available</div>
             </div>
             
-            <div class="chat-item">
+            <div class="chat-item" onclick="openChat('Trading Group')">
                 <div class="chat-name">Trading Group</div>
                 <div class="chat-last-message">Market updates and analysis</div>
+            </div>
+        </div>
+
+        <!-- Chat Messages Page -->
+        <div class="content-page" id="chatMessagesPage">
+            <h2 class="page-title" id="chatTitle">Chat</h2>
+            
+            <div class="chat-messages">
+                <div class="message received">
+                    Hello! How can I help you today?
+                </div>
+                <div class="message sent">
+                    I have a question about the trading bots.
+                </div>
+                <div class="message received">
+                    Sure! Which bot are you interested in?
+                </div>
+            </div>
+            
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="Type your message..." onkeypress="handleMessageKeyPress(event)">
+                <button onclick="sendMessage()">Send</button>
             </div>
         </div>
 
@@ -1756,8 +1832,45 @@
         }
 
         function startChat() {
-            alert('Starting chat...');
-            // In a real app, this would open a chat interface
+            // Hide all pages
+            document.querySelectorAll('.content-page, .user-profile-page').forEach(p => p.classList.remove('active'));
+            
+            // Show chat messages page
+            document.getElementById('chatMessagesPage').classList.add('active');
+            document.getElementById('chatTitle').textContent = 'Direct Message';
+        }
+
+        function openChat(chatName) {
+            // Hide all pages
+            document.querySelectorAll('.content-page, .user-profile-page').forEach(p => p.classList.remove('active'));
+            
+            // Show chat messages page
+            document.getElementById('chatMessagesPage').classList.add('active');
+            document.getElementById('chatTitle').textContent = chatName;
+        }
+
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+            
+            if(message) {
+                const chatMessages = document.querySelector('.chat-messages');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message sent';
+                messageDiv.textContent = message;
+                chatMessages.appendChild(messageDiv);
+                messageInput.value = '';
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        }
+
+        function handleMessageKeyPress(event) {
+            if(event.key === 'Enter') {
+                event.preventDefault();
+                sendMessage();
+            }
         }
 
         function showMoreOptions(element) {
