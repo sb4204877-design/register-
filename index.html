@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeHub - Trading Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e3a8a); /* Dark blue to navy blue gradient */
+            color: #f8fafc;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(15, 23, 42, 0.8); /* Dark transparent background */
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .header-icon {
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 25px;
+            margin: 15px;
+            display: flex;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 5px;
+            font-size: 14px;
+            background: transparent;
+            color: white;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: rgba(15, 23, 42, 0.6);
+            color: white;
+            text-align: center;
+            padding: 30px 15px;
+            margin: 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero h1 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .hero p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            line-height: 1.3;
+        }
+
+        /* Stats Section - Horizontal */
+        .stats {
+            display: flex;
+            gap: 10px;
+            margin: 15px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .stat-icon {
+            width: 30px;
+            height: 30px;
+            margin: 0 auto 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-number {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+
+        /* Small CTA Button */
+        .cta-btn {
+            display: inline-block;
+            background: #3b82f6;
+            color: white;
+            text-align: center;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin: 15px;
+            width: auto;
+            transition: background 0.3s;
+        }
+
+        .cta-btn:hover {
+            background: #4f46e5;
+        }
+
+        /* Content Pages */
+        .content-page {
+            display: none;
+            padding: 15px;
+        }
+
+        .content-page.active {
+            display: block;
+        }
+
+        .page-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Post Card */
+        .post-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 15px;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .post-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #3b82f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .post-user {
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .post-content {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .post-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.7rem;
+            opacity: 0.6;
+            margin-bottom: 10px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 15px;
+            opacity: 0.8;
+            font-size: 0.8rem;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .more-options {
+            margin-right: auto;
+            cursor: pointer;
+            opacity: 0.6;
+        }
+
+        .more-options:hover {
+            opacity: 1;
+        }
+
+        /* Comments Section */
+        .comments-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .comment {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comment:last-child {
+            border-bottom: none;
+        }
+
+        .comment-user {
+            font-weight: 500;
+            font-size: 0.8rem;
+            color: #3b82f6;
+        }
+
+        .comment-text {
+            font-size: 0.8rem;
+            margin-top: 3px;
+        }
+
+        .add-comment {
+            display: flex;
+            margin-top: 10px;
+            gap: 5px;
+        }
+
+        .add-comment input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            background: rgba(0,0,0,0.2);
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .add-comment button {
+            padding: 8px 12px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* Notification Item */
+        .notification-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .notification-content {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .notification-time {
+            font-size: 0.7rem;
+            opacity: 0.6;
+            margin-top: 5px;
+        }
+
+        /* Profile Section */
+        .profile-header {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 15px;
+        }
+
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #3b82f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 0 auto 10px;
+        }
+
+        .profile-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+
+        .stat-box {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        .profile-action-btn {
+            padding: 8px 15px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .profile-action-btn.unfollow {
+            background: #6b7280;
+        }
+
+        /* Trading Dashboard */
+        .trading-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .trading-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        .trading-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #10b981;
+            margin: 5px 0;
+        }
+
+        .trading-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .chart-placeholder {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        /* Bot Cards */
+        .bot-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 10px;
+        }
+
+        .bot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .bot-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .bot-price {
+            font-weight: bold;
+            color: #3b82f6;
+        }
+
+        .bot-profit {
+            color: #10b981;
+            font-weight: 500;
+        }
+
+        .bot-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            margin: 10px 0;
+        }
+
+        .bot-stat {
+            text-align: center;
+        }
+
+        .bot-stat-value {
+            font-weight: bold;
+            color: #10b981;
+        }
+
+        .bot-stat-label {
+            opacity: 0.7;
+        }
+
+        /* Chat Section */
+        .chat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 10px;
+        }
+
+        .chat-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .chat-last-message {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        /* About Page */
+        .about-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 15px;
+        }
+
+        .about-section h3 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: #3b82f6;
+        }
+
+        .about-section p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        .video-placeholder {
+            background: rgba(255, 255, 255, 0.1);
+            height: 120px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.9);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.7rem;
+        }
+
+        .nav-item.active {
+            color: #3b82f6;
+        }
+
+        .nav-icon {
+            font-size: 18px;
+        }
+
+        /* Plus Button */
+        .plus-btn {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* More Options Dropdown */
+        .more-dropdown {
+            position: absolute;
+            background: rgba(15, 23, 42, 0.9);
+            border-radius: 8px;
+            padding: 8px 0;
+            z-index: 1002;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            min-width: 120px;
+        }
+
+        .more-option {
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: white;
+        }
+
+        .more-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            padding: 20px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            background: rgba(0,0,0,0.2);
+            color: white;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .form-btn {
+            width: 100%;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 10px;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        .form-btn:hover {
+            background: #4f46e5;
+        }
+
+        .switch-form {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .switch-form a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        /* Footer - Outside Account */
+        .external-footer {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 30px 15px 15px;
+            margin-top: 30px;
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .footer-section h4 {
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #3b82f6;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .social-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            transition: transform 0.3s;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        .facebook { background: #1877f2; }
+        .tiktok { background: #000000; }
+        .telegram { background: #0088cc; }
+
+        .copyright {
+            text-align: center;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.7rem;
+            margin-top: 15px;
+        }
+
+        /* Hidden Elements for Internal Pages */
+        .internal-hidden {
+            display: none !important;
+        }
+        
+        /* Hidden Elements for External Page */
+        .external-hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-text">TradeHub</div>
+        <div class="header-icons external-hidden">
+            <i class="fas fa-envelope header-icon" onclick="showPage('chat')"></i>
+            <i class="fas fa-bell header-icon" onclick="showPage('notifications')"></i>
+            <i class="fas fa-search header-icon" onclick="toggleSearch()"></i>
+        </div>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="search-bar" id="searchBar" style="display: none;">
+        <i class="fas fa-search" style="color: rgba(255,255,255,0.7); margin-left: 5px;"></i>
+        <input type="text" placeholder="Search users..." id="searchInput" onkeypress="handleSearchKeyPress(event)">
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Login Page -->
+        <div class="content-page active" id="loginPage">
+            <!-- Hero Section -->
+            <section class="hero">
+                <h1>TradeHub - Trading Platform</h1>
+                <p>Join the best platform for copying traders and buying real trading bots</p>
+            </section>
+
+            <!-- Stats Section - Horizontal -->
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number">12,500</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <div class="stat-number">850</div>
+                    <div class="stat-label">Verified Traders</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="stat-number">120</div>
+                    <div class="stat-label">Developers</div>
+                </div>
+            </div>
+
+            <!-- Small CTA Button -->
+            <div style="text-align: center;">
+                <a href="#" class="cta-btn" onclick="showAuthModal('authModal')">
+                    Get Started
+                </a>
+            </div>
+        </div>
+
+        <!-- Home Page -->
+        <div class="content-page" id="homePage">
+            <h2 class="page-title">Home</h2>
+            
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-avatar" onclick="showProfile('Ahmad Mohamed')">A</div>
+                    <div class="post-user" onclick="showProfile('Ahmad Mohamed')">Ahmad Mohamed</div>
+                    <div class="more-options" onclick="showMoreOptions(this)">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+                <div class="post-content">
+                    Made 15% profit today in Bitcoin market! Using the new trading bot.
+                </div>
+                <div class="post-meta">
+                    <span><i class="fas fa-eye"></i> 124 views</span>
+                </div>
+                <div class="post-actions">
+                    <div class="action-btn" onclick="toggleLike(this)">
+                        <i class="fas fa-heart"></i>
+                        <span>24</span>
+                    </div>
+                    <div class="action-btn" onclick="toggleComments(this)">
+                        <i class="fas fa-comment"></i>
+                        <span>8</span>
+                    </div>
+                </div>
+                
+                <div class="comments-section" style="display: none;">
+                    <div class="comment">
+                        <div class="comment-user">Fatima Ali</div>
+                        <div class="comment-text">Great job! Can you share the bot details?</div>
+                    </div>
+                    <div class="comment">
+                        <div class="comment-user">Khaled Hassan</div>
+                        <div class="comment-text">Congrats on the profit!</div>
+                    </div>
+                    <div class="add-comment">
+                        <input type="text" placeholder="Write a comment..." onkeypress="handleCommentKeyPress(event, this)">
+                        <button onclick="addComment(this)">Send</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-avatar" onclick="showProfile('Fatima Ali')">F</div>
+                    <div class="post-user" onclick="showProfile('Fatima Ali')">Fatima Ali</div>
+                    <div class="more-options" onclick="showMoreOptions(this)">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+                <div class="post-content">
+                    New tutorial for using the bot in QTX platform is now available.
+                </div>
+                <div class="post-meta">
+                    <span><i class="fas fa-eye"></i> 89 views</span>
+                </div>
+                <div class="post-actions">
+                    <div class="action-btn" onclick="toggleLike(this)">
+                        <i class="fas fa-heart"></i>
+                        <span>42</span>
+                    </div>
+                    <div class="action-btn" onclick="toggleComments(this)">
+                        <i class="fas fa-comment"></i>
+                        <span>12</span>
+                    </div>
+                </div>
+                
+                <div class="comments-section" style="display: none;">
+                    <div class="comment">
+                        <div class="comment-user">Ahmad Mohamed</div>
+                        <div class="comment-text">Thanks for sharing!</div>
+                    </div>
+                    <div class="add-comment">
+                        <input type="text" placeholder="Write a comment..." onkeypress="handleCommentKeyPress(event, this)">
+                        <button onclick="addComment(this)">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Page -->
+        <div class="content-page" id="profilePage">
+            <h2 class="page-title">Profile</h2>
+            
+            <div class="profile-header">
+                <div class="profile-avatar">U</div>
+                <div class="profile-name">User Name</div>
+                <div class="profile-stats">
+                    <div class="stat-box">
+                        <div class="stat-value">125</div>
+                        <div class="stat-label">Followers</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">89</div>
+                        <div class="stat-label">Following</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">92%</div>
+                        <div class="stat-label">Win Rate</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- User's Posts -->
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-avatar">U</div>
+                    <div class="post-user">You</div>
+                    <div class="more-options" onclick="showMoreOptions(this)">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+                <div class="post-content">
+                    My first post about trading strategies!
+                </div>
+                <div class="post-meta">
+                    <span><i class="fas fa-eye"></i> 45 views</span>
+                </div>
+                <div class="post-actions">
+                    <div class="action-btn" onclick="toggleLike(this)">
+                        <i class="fas fa-heart"></i>
+                        <span>12</span>
+                    </div>
+                    <div class="action-btn" onclick="toggleComments(this)">
+                        <i class="fas fa-comment"></i>
+                        <span>3</span>
+                    </div>
+                </div>
+                
+                <div class="comments-section" style="display: none;">
+                    <div class="comment">
+                        <div class="comment-user">Ahmad Mohamed</div>
+                        <div class="comment-text">Great strategy!</div>
+                    </div>
+                    <div class="add-comment">
+                        <input type="text" placeholder="Write a comment..." onkeypress="handleCommentKeyPress(event, this)">
+                        <button onclick="addComment(this)">Send</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-avatar">U</div>
+                    <div class="post-user">You</div>
+                    <div class="more-options" onclick="showMoreOptions(this)">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+                <div class="post-content">
+                    Sharing my latest trading results. 18% profit this week!
+                </div>
+                <div class="post-meta">
+                    <span><i class="fas fa-eye"></i> 78 views</span>
+                </div>
+                <div class="post-actions">
+                    <div class="action-btn" onclick="toggleLike(this)">
+                        <i class="fas fa-heart"></i>
+                        <span>28</span>
+                    </div>
+                    <div class="action-btn" onclick="toggleComments(this)">
+                        <i class="fas fa-comment"></i>
+                        <span>7</span>
+                    </div>
+                </div>
+                
+                <div class="comments-section" style="display: none;">
+                    <div class="comment">
+                        <div class="comment-user">Fatima Ali</div>
+                        <div class="comment-text">Amazing results!</div>
+                    </div>
+                    <div class="add-comment">
+                        <input type="text" placeholder="Write a comment..." onkeypress="handleCommentKeyPress(event, this)">
+                        <button onclick="addComment(this)">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trading Page -->
+        <div class="content-page" id="tradingPage">
+            <h2 class="page-title">Trading</h2>
+            
+            <div class="trading-stats">
+                <div class="trading-card">
+                    <div class="trading-value">$1,250</div>
+                    <div class="trading-label">Total Profit</div>
+                </div>
+                <div class="trading-card">
+                    <div class="trading-value">24</div>
+                    <div class="trading-label">Trades</div>
+                </div>
+                <div class="trading-card">
+                    <div class="trading-value">18</div>
+                    <div class="trading-label">Winning</div>
+                </div>
+                <div class="trading-card">
+                    <div class="trading-value">6</div>
+                    <div class="trading-label">Losing</div>
+                </div>
+            </div>
+            
+            <div class="chart-placeholder">
+                <div>Trading Chart</div>
+                <i class="fas fa-chart-line" style="font-size: 2rem; color: #3b82f6; margin-top: 10px;"></i>
+            </div>
+        </div>
+
+        <!-- Bots Page -->
+        <div class="content-page" id="botsPage">
+            <h2 class="page-title">Bots</h2>
+            
+            <div class="bot-card">
+                <div class="bot-header">
+                    <div class="bot-name">Gold Bot</div>
+                    <div class="bot-price">$99</div>
+                </div>
+                <div class="bot-stats">
+                    <div class="bot-stat">
+                        <div class="bot-stat-value">12.5%</div>
+                        <div class="bot-stat-label">Profit</div>
+                    </div>
+                    <div class="bot-stat">
+                        <div class="bot-stat-value">24</div>
+                        <div class="bot-stat-label">Sales</div>
+                    </div>
+                    <div class="bot-stat">
+                        <div class="bot-stat-value">89%</div>
+                        <div class="bot-stat-label">Success</div>
+                    </div>
+                </div>
+                <div class="post-header" style="margin-top: 10px;">
+                    <div class="post-avatar" onclick="showProfile('Ahmad Mohamed')">A</div>
+                    <div class="post-user" onclick="showProfile('Ahmad Mohamed')">Ahmad Mohamed</div>
+                </div>
+                <button class="cta-btn" style="padding: 8px 15px; font-size: 0.8rem; margin-top: 10px; width: 100%;">Buy Now</button>
+            </div>
+            
+            <div class="bot-card">
+                <div class="bot-header">
+                    <div class="bot-name">Silver Bot</div>
+                    <div class="bot-price">$79</div>
+                </div>
+                <div class="bot-stats">
+                    <div class="bot-stat">
+                        <div class="bot-stat-value">8.2%</div>
+                        <div class="bot-stat-label">Profit</div>
+                    </div>
+                    <div class="bot-stat">
+                        <div class="bot-stat-value">18</div>
+                        <div class="bot-stat-label">Sales</div>
+                    </div>
+                    <div class="bot-stat">
+                        <div class="bot-stat-value">76%</div>
+                        <div class="bot-stat-label">Success</div>
+                    </div>
+                </div>
+                <div class="post-header" style="margin-top: 10px;">
+                    <div class="post-avatar" onclick="showProfile('Fatima Ali')">F</div>
+                    <div class="post-user" onclick="showProfile('Fatima Ali')">Fatima Ali</div>
+                </div>
+                <button class="cta-btn" style="padding: 8px 15px; font-size: 0.8rem; margin-top: 10px; width: 100%;">Buy Now</button>
+            </div>
+        </div>
+
+        <!-- Chat Page -->
+        <div class="content-page" id="chatPage">
+            <h2 class="page-title">Chat</h2>
+            
+            <div class="chat-item">
+                <div class="chat-name">Support Channel</div>
+                <div class="chat-last-message">Direct support available</div>
+            </div>
+            
+            <div class="chat-item">
+                <div class="chat-name">Trading Group</div>
+                <div class="chat-last-message">Market updates and analysis</div>
+            </div>
+        </div>
+
+        <!-- Notifications Page -->
+        <div class="content-page" id="notificationsPage">
+            <h2 class="page-title">Notifications</h2>
+            
+            <div class="notification-item">
+                <div class="notification-content">Ahmad followed you</div>
+                <div class="notification-time">5 minutes ago</div>
+            </div>
+            
+            <div class="notification-item">
+                <div class="notification-content">Fatima liked your post</div>
+                <div class="notification-time">10 minutes ago</div>
+            </div>
+            
+            <div class="notification-item">
+                <div class="notification-content">Khaled commented on your post</div>
+                <div class="notification-time">15 minutes ago</div>
+            </div>
+        </div>
+
+        <!-- About Page -->
+        <div class="content-page" id="aboutPage">
+            <h2 class="page-title">About</h2>
+            
+            <div class="about-section">
+                <h3>How to Use the Platform</h3>
+                <p>Learn how to get started with our trading platform and maximize your profits.</p>
+            </div>
+
+            <div class="about-section">
+                <h3>Download Free Bot</h3>
+                <p>Get the free trading bot and follow the installation tutorial.</p>
+                <div class="video-placeholder">
+                    <i class="fas fa-play" style="font-size: 1.5rem;"></i>
+                    <div>Video Tutorial</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- External Footer - Outside Account -->
+    <footer class="external-footer">
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h4>TradeHub</h4>
+                <p style="color: rgba(255,255,255,0.7); font-size: 0.8rem; line-height: 1.4;">Smart Trading Platform & Trader Copying</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Bots</a></li>
+                    <li><a href="#">Trading</a></li>
+                    <li><a href="#">Chat</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul class="footer-links">
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Terms</a></li>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-icons">
+                    <a href="#" class="social-icon instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon tiktok"><i class="fab fa-tiktok"></i></a>
+                    <a href="#" class="social-icon telegram"><i class="fab fa-telegram"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2025 TradeHub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav internal-hidden">
+        <a href="#" class="nav-item" onclick="showPage('home')">
+            <i class="fas fa-home nav-icon"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showPage('profile')">
+            <i class="fas fa-user nav-icon"></i>
+            <span>Profile</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showPage('chat')">
+            <i class="fas fa-comments nav-icon"></i>
+            <span>Chat</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showPage('trading')">
+            <i class="fas fa-chart-line nav-icon"></i>
+            <span>Trading</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showPage('bots')">
+            <i class="fas fa-robot nav-icon"></i>
+            <span>Bots</span>
+        </a>
+        
+        <!-- Plus Button -->
+        <div class="plus-btn internal-hidden" onclick="showPostModal()">
+            <i class="fas fa-plus"></i>
+        </div>
+    </nav>
+
+    <!-- Post Modal -->
+    <div class="modal" id="postModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="toggleModal('postModal')">&times;</span>
+            <h2 style="text-align: center; margin-bottom: 15px; font-size: 1.1rem; color: white;">Create Post</h2>
+            
+            <div class="form-group">
+                <label for="postType">Post Type</label>
+                <select id="postType" onchange="togglePostOptions()">
+                    <option value="post">Post</option>
+                    <option value="ad">Ad</option>
+                    <option value="bot">Bot</option>
+                </select>
+            </div>
+            
+            <div id="postOptions">
+                <div class="form-group">
+                    <label for="postContent">Content</label>
+                    <textarea id="postContent" placeholder="Write your post..." style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; font-size: 0.9rem; background: rgba(0,0,0,0.2); color: white; height: 80px; resize: vertical;"></textarea>
+                </div>
+                
+                <div id="adOptions" style="display: none;">
+                    <div class="form-group">
+                        <label for="targetAudience">Target Audience</label>
+                        <select id="targetAudience">
+                            <option value="1000">1,000 Users - $1</option>
+                            <option value="5000">5,000 Users - $5</option>
+                            <option value="10000">10,000 Users - $10</option>
+                            <option value="25000">25,000 Users - $25</option>
+                            <option value="50000">50,000 Users - $50</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="botOptions" style="display: none;">
+                <div class="form-group">
+                    <label for="botName">Bot Name</label>
+                    <input type="text" id="botName" placeholder="Enter bot name">
+                </div>
+                <div class="form-group">
+                    <label for="botPrice">Price ($)</label>
+                    <input type="number" id="botPrice" placeholder="Enter price">
+                </div>
+                <div class="form-group">
+                    <label for="botDescription">Description</label>
+                    <textarea id="botDescription" placeholder="Describe your bot..." style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; font-size: 0.9rem; background: rgba(0,0,0,0.2); color: white; height: 60px; resize: vertical;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="botVideo">Video Link</label>
+                    <input type="text" id="botVideo" placeholder="Enter video link">
+                </div>
+            </div>
+            
+            <button class="form-btn" onclick="createPost()">Publish</button>
+        </div>
+    </div>
+
+    <!-- More Options Dropdown -->
+    <div class="more-dropdown" id="moreDropdown" style="display: none; position: absolute;">
+        <div class="more-option" onclick="editPost()">Edit</div>
+        <div class="more-option" onclick="deletePost()">Delete</div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="toggleModal('authModal')">&times;</span>
+            <h2 style="text-align: center; margin-bottom: 15px; font-size: 1.1rem; color: white;">Login</h2>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter password">
+            </div>
+            <button class="form-btn" onclick="login()">Login</button>
+            <div class="switch-form">
+                <p>Don't have account? <a href="#" onclick="showRegisterForm()">Sign up</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="toggleModal('registerModal')">&times;</span>
+            <h2 style="text-align: center; margin-bottom: 15px; font-size: 1.1rem; color: white;">Sign Up</h2>
+            <div class="form-group">
+                <label for="regUsername">Username</label>
+                <input type="text" id="regUsername" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label for="regEmail">Email</label>
+                <input type="email" id="regEmail" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="regCountry">Country</label>
+                <select id="regCountry">
+                    <option value="">Select Country</option>
+                    <option value="SA">Saudi Arabia</option>
+                    <option value="AE">UAE</option>
+                    <option value="EG">Egypt</option>
+                    <option value="JO">Jordan</option>
+                    <option value="LB">Lebanon</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="regReferral">Referral Code (Optional)</label>
+                <input type="text" id="regReferral" placeholder="Enter referral code">
+            </div>
+            <div class="form-group">
+                <label for="regPassword">Password</label>
+                <input type="password" id="regPassword" placeholder="Enter password">
+            </div>
+            <div class="form-group">
+                <label for="regConfirmPassword">Confirm Password</label>
+                <input type="password" id="regConfirmPassword" placeholder="Confirm password">
+            </div>
+            <button class="form-btn" onclick="register()">Sign Up</button>
+            <div class="switch-form">
+                <p>Have account? <a href="#" onclick="showLoginForm()">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isLoggedIn = false;
+        let currentDropdown = null;
+
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function showRegisterForm() {
+            document.getElementById('authModal').style.display = 'none';
+            document.getElementById('registerModal').style.display = 'flex';
+        }
+
+        function showLoginForm() {
+            document.getElementById('registerModal').style.display = 'none';
+            document.getElementById('authModal').style.display = 'flex';
+        }
+
+        function showAuthModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function showPostModal() {
+            document.getElementById('postModal').style.display = 'flex';
+        }
+
+        function togglePostOptions() {
+            const postType = document.getElementById('postType').value;
+            const postOptions = document.getElementById('postOptions');
+            const botOptions = document.getElementById('botOptions');
+            const adOptions = document.getElementById('adOptions');
+            
+            if(postType === 'bot') {
+                postOptions.style.display = 'none';
+                botOptions.style.display = 'block';
+                adOptions.style.display = 'none';
+            } else if(postType === 'ad') {
+                postOptions.style.display = 'block';
+                botOptions.style.display = 'none';
+                adOptions.style.display = 'block';
+            } else {
+                postOptions.style.display = 'block';
+                botOptions.style.display = 'none';
+                adOptions.style.display = 'none';
+            }
+        }
+
+        function createPost() {
+            const postType = document.getElementById('postType').value;
+            
+            if(postType === 'post') {
+                const postContent = document.getElementById('postContent').value;
+                if(postContent.trim() === '') {
+                    alert('Please enter some content for your post');
+                    return;
+                }
+                alert('Post created successfully!');
+            } else if(postType === 'ad') {
+                const targetAudience = document.getElementById('targetAudience').value;
+                alert(`Ad created! Reaching ${targetAudience} users`);
+            } else if(postType === 'bot') {
+                const botName = document.getElementById('botName').value;
+                const botPrice = document.getElementById('botPrice').value;
+                if(!botName || !botPrice) {
+                    alert('Please enter bot name and price');
+                    return;
+                }
+                alert(`Bot "${botName}" created successfully!`);
+            }
+            
+            document.getElementById('postModal').style.display = 'none';
+            document.getElementById('postContent').value = '';
+            document.getElementById('botName').value = '';
+            document.getElementById('botPrice').value = '';
+            document.getElementById('botDescription').value = '';
+            document.getElementById('botVideo').value = '';
+        }
+
+        function toggleLike(element) {
+            const icon = element.querySelector('i');
+            const countSpan = element.querySelector('span');
+            const currentCount = parseInt(countSpan.textContent);
+            
+            if(icon.classList.contains('fa-heart') && !icon.style.color) {
+                icon.style.color = '#ef4444';
+                countSpan.textContent = currentCount + 1;
+            } else {
+                icon.style.color = '';
+                countSpan.textContent = currentCount - 1;
+            }
+        }
+
+        function toggleComments(element) {
+            const postCard = element.closest('.post-card');
+            const commentsSection = postCard.querySelector('.comments-section');
+            commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function addComment(button) {
+            const commentInput = button.previousElementSibling;
+            const commentText = commentInput.value.trim();
+            
+            if(commentText) {
+                const commentsSection = button.closest('.comments-section');
+                const commentsContainer = commentsSection;
+                
+                const newComment = document.createElement('div');
+                newComment.className = 'comment';
+                newComment.innerHTML = `
+                    <div class="comment-user">You</div>
+                    <div class="comment-text">${commentText}</div>
+                `;
+                
+                // Insert before the add-comment section
+                commentsContainer.insertBefore(newComment, commentsContainer.lastElementChild);
+                commentInput.value = '';
+            }
+        }
+
+        function handleCommentKeyPress(event, input) {
+            if(event.key === 'Enter') {
+                event.preventDefault();
+                const button = input.nextElementSibling;
+                addComment(button);
+            }
+        }
+
+        function handleSearchKeyPress(event) {
+            if(event.key === 'Enter') {
+                event.preventDefault();
+                const searchInput = document.getElementById('searchInput');
+                alert(`Searching for: ${searchInput.value}`);
+                toggleSearch();
+            }
+        }
+
+        function showProfile(username) {
+            if(username === 'You') {
+                showPage('profile');
+            } else {
+                alert(`Showing profile for ${username}`);
+                // In a real app, this would navigate to the user's profile page
+            }
+        }
+
+        function toggleFollow(button) {
+            if(button.textContent === 'Follow') {
+                button.textContent = 'Unfollow';
+                button.classList.add('unfollow');
+            } else {
+                button.textContent = 'Follow';
+                button.classList.remove('unfollow');
+            }
+        }
+
+        function startChat() {
+            alert('Starting chat...');
+            // In a real app, this would open a chat interface
+        }
+
+        function showMoreOptions(element) {
+            const dropdown = document.getElementById('moreDropdown');
+            const rect = element.getBoundingClientRect();
+            
+            dropdown.style.display = 'block';
+            dropdown.style.top = rect.bottom + 'px';
+            dropdown.style.left = rect.left + 'px';
+            
+            currentDropdown = element;
+        }
+
+        function editPost() {
+            alert('Editing post...');
+            document.getElementById('moreDropdown').style.display = 'none';
+        }
+
+        function deletePost() {
+            if(confirm('Are you sure you want to delete this post?')) {
+                alert('Post deleted');
+                document.getElementById('moreDropdown').style.display = 'none';
+            }
+        }
+
+        function toggleSearch() {
+            const searchBar = document.getElementById('searchBar');
+            searchBar.style.display = searchBar.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if(email && password) {
+                isLoggedIn = true;
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('homePage').classList.add('active');
+                document.getElementById('authModal').style.display = 'none';
+                updateNavActive('home');
+                
+                // Show internal page elements when logged in
+                document.querySelector('.bottom-nav').classList.remove('internal-hidden');
+                document.querySelector('.plus-btn').classList.remove('internal-hidden');
+                document.querySelector('.header-icons').classList.remove('external-hidden');
+                document.querySelector('.external-footer').classList.add('internal-hidden');
+            }
+        }
+
+        function register() {
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const country = document.getElementById('regCountry').value;
+            const password = document.getElementById('regPassword').value;
+            
+            if(username && email && country && password) {
+                isLoggedIn = true;
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('homePage').classList.add('active');
+                document.getElementById('registerModal').style.display = 'none';
+                updateNavActive('home');
+                
+                // Show internal page elements when logged in
+                document.querySelector('.bottom-nav').classList.remove('internal-hidden');
+                document.querySelector('.plus-btn').classList.remove('internal-hidden');
+                document.querySelector('.header-icons').classList.remove('external-hidden');
+                document.querySelector('.external-footer').classList.add('internal-hidden');
+            }
+        }
+
+        function showPage(page) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.content-page');
+            pages.forEach(p => p.classList.remove('active'));
+            
+            // Show selected page
+            if(page === 'home') {
+                document.getElementById('homePage').classList.add('active');
+            } else if(page === 'profile') {
+                document.getElementById('profilePage').classList.add('active');
+            } else if(page === 'trading') {
+                document.getElementById('tradingPage').classList.add('active');
+            } else if(page === 'bots') {
+                document.getElementById('botsPage').classList.add('active');
+            } else if(page === 'chat') {
+                document.getElementById('chatPage').classList.add('active');
+            } else if(page === 'notifications') {
+                document.getElementById('notificationsPage').classList.add('active');
+            } else if(page === 'about') {
+                document.getElementById('aboutPage').classList.add('active');
+            }
+            
+            updateNavActive(page);
+        }
+
+        function updateNavActive(page) {
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if(item.querySelector('span').textContent.toLowerCase() === page || 
+                   (page === 'home' && item.querySelector('span').textContent === 'Home')) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            const dropdown = document.getElementById('moreDropdown');
+            if(event.target.closest('.more-options') === null && !event.target.closest('.more-dropdown')) {
+                dropdown.style.display = 'none';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initially hide internal page elements on external page
+            document.querySelector('.bottom-nav').classList.add('internal-hidden');
+            document.querySelector('.plus-btn').classList.add('internal-hidden');
+            document.querySelector('.header-icons').classList.add('external-hidden');
+            document.querySelector('.external-footer').classList.remove('internal-hidden');
+            
+            // Keep login page visible initially
+            document.getElementById('homePage').classList.remove('active');
+        });
+    </script>
+</body>
+</html>
+
