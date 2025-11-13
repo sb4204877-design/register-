@@ -630,6 +630,12 @@
             background: rgba(255, 255, 255, 0.1);
         }
 
+        /* User Profile Page */
+        .user-profile-page {
+            display: none;
+            padding: 15px;
+        }
+
         /* Modal Styles */
         .modal {
             display: none;
@@ -875,8 +881,8 @@
             
             <div class="post-card">
                 <div class="post-header">
-                    <div class="post-avatar" onclick="showProfile('Ahmad Mohamed')">A</div>
-                    <div class="post-user" onclick="showProfile('Ahmad Mohamed')">Ahmad Mohamed</div>
+                    <div class="post-avatar" onclick="showUserProfile('Ahmad Mohamed')">A</div>
+                    <div class="post-user" onclick="showUserProfile('Ahmad Mohamed')">Ahmad Mohamed</div>
                     <div class="more-options" onclick="showMoreOptions(this)">
                         <i class="fas fa-ellipsis-v"></i>
                     </div>
@@ -916,8 +922,8 @@
 
             <div class="post-card">
                 <div class="post-header">
-                    <div class="post-avatar" onclick="showProfile('Fatima Ali')">F</div>
-                    <div class="post-user" onclick="showProfile('Fatima Ali')">Fatima Ali</div>
+                    <div class="post-avatar" onclick="showUserProfile('Fatima Ali')">F</div>
+                    <div class="post-user" onclick="showUserProfile('Fatima Ali')">Fatima Ali</div>
                     <div class="more-options" onclick="showMoreOptions(this)">
                         <i class="fas fa-ellipsis-v"></i>
                     </div>
@@ -1051,6 +1057,70 @@
             </div>
         </div>
 
+        <!-- User Profile Page -->
+        <div class="user-profile-page" id="userProfilePage">
+            <div class="profile-header">
+                <div class="profile-avatar" id="userProfileAvatar">U</div>
+                <div class="profile-name" id="userProfileName">User Name</div>
+                <div class="profile-stats">
+                    <div class="stat-box">
+                        <div class="stat-value" id="userFollowers">125</div>
+                        <div class="stat-label">Followers</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="userFollowing">89</div>
+                        <div class="stat-label">Following</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="userWinRate">92%</div>
+                        <div class="stat-label">Win Rate</div>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <button class="profile-action-btn" onclick="toggleFollow(this)" id="followBtn">Follow</button>
+                    <button class="profile-action-btn" onclick="startChat()">Message</button>
+                    <div class="more-options" onclick="showUserMoreOptions(this)" style="margin: 0;">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- User's Posts -->
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-avatar" id="userPostAvatar">U</div>
+                    <div class="post-user" id="userPostName">User Name</div>
+                </div>
+                <div class="post-content" id="userPostContent">
+                    My first post about trading strategies!
+                </div>
+                <div class="post-meta">
+                    <span><i class="fas fa-eye"></i> <span id="userPostViews">45</span> views</span>
+                </div>
+                <div class="post-actions">
+                    <div class="action-btn" onclick="toggleLike(this)">
+                        <i class="fas fa-heart"></i>
+                        <span id="userPostLikes">12</span>
+                    </div>
+                    <div class="action-btn" onclick="toggleComments(this)">
+                        <i class="fas fa-comment"></i>
+                        <span id="userPostComments">3</span>
+                    </div>
+                </div>
+                
+                <div class="comments-section" style="display: none;">
+                    <div class="comment">
+                        <div class="comment-user">Ahmad Mohamed</div>
+                        <div class="comment-text">Great strategy!</div>
+                    </div>
+                    <div class="add-comment">
+                        <input type="text" placeholder="Write a comment..." onkeypress="handleCommentKeyPress(event, this)">
+                        <button onclick="addComment(this)">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Trading Page -->
         <div class="content-page" id="tradingPage">
             <h2 class="page-title">Trading</h2>
@@ -1104,8 +1174,8 @@
                     </div>
                 </div>
                 <div class="post-header" style="margin-top: 10px;">
-                    <div class="post-avatar" onclick="showProfile('Ahmad Mohamed')">A</div>
-                    <div class="post-user" onclick="showProfile('Ahmad Mohamed')">Ahmad Mohamed</div>
+                    <div class="post-avatar" onclick="showUserProfile('Ahmad Mohamed')">A</div>
+                    <div class="post-user" onclick="showUserProfile('Ahmad Mohamed')">Ahmad Mohamed</div>
                 </div>
                 <button class="cta-btn" style="padding: 8px 15px; font-size: 0.8rem; margin-top: 10px; width: 100%;">Buy Now</button>
             </div>
@@ -1130,8 +1200,8 @@
                     </div>
                 </div>
                 <div class="post-header" style="margin-top: 10px;">
-                    <div class="post-avatar" onclick="showProfile('Fatima Ali')">F</div>
-                    <div class="post-user" onclick="showProfile('Fatima Ali')">Fatima Ali</div>
+                    <div class="post-avatar" onclick="showUserProfile('Fatima Ali')">F</div>
+                    <div class="post-user" onclick="showUserProfile('Fatima Ali')">Fatima Ali</div>
                 </div>
                 <button class="cta-btn" style="padding: 8px 15px; font-size: 0.8rem; margin-top: 10px; width: 100%;">Buy Now</button>
             </div>
@@ -1265,6 +1335,12 @@
             <i class="fas fa-plus"></i>
         </div>
     </nav>
+
+    <!-- User More Options Dropdown -->
+    <div class="more-dropdown" id="userMoreDropdown" style="display: none; position: absolute;">
+        <div class="more-option" onclick="blockUser()">Block</div>
+        <div class="more-option" onclick="reportUser()">Report</div>
+    </div>
 
     <!-- Post Modal -->
     <div class="modal" id="postModal">
@@ -1539,6 +1615,20 @@
             }
         }
 
+        function showUserProfile(username) {
+            // Hide all pages
+            document.querySelectorAll('.content-page, .user-profile-page').forEach(p => p.classList.remove('active'));
+            
+            // Set user profile data
+            document.getElementById('userProfileName').textContent = username;
+            document.getElementById('userProfileAvatar').textContent = username.charAt(0).toUpperCase();
+            document.getElementById('userPostName').textContent = username;
+            document.getElementById('userPostAvatar').textContent = username.charAt(0).toUpperCase();
+            
+            // Show user profile page
+            document.getElementById('userProfilePage').classList.add('active');
+        }
+
         function toggleFollow(button) {
             if(button.textContent === 'Follow') {
                 button.textContent = 'Unfollow';
@@ -1563,6 +1653,31 @@
             dropdown.style.left = rect.left + 'px';
             
             currentDropdown = element;
+        }
+
+        function showUserMoreOptions(element) {
+            const dropdown = document.getElementById('userMoreDropdown');
+            const rect = element.getBoundingClientRect();
+            
+            dropdown.style.display = 'block';
+            dropdown.style.top = rect.bottom + 'px';
+            dropdown.style.left = rect.left + 'px';
+            
+            currentDropdown = element;
+        }
+
+        function blockUser() {
+            if(confirm('Are you sure you want to block this user?')) {
+                alert('User blocked');
+                document.getElementById('userMoreDropdown').style.display = 'none';
+            }
+        }
+
+        function reportUser() {
+            if(confirm('Are you sure you want to report this user?')) {
+                alert('User reported');
+                document.getElementById('userMoreDropdown').style.display = 'none';
+            }
         }
 
         function editPost() {
@@ -1624,7 +1739,7 @@
 
         function showPage(page) {
             // Hide all pages
-            const pages = document.querySelectorAll('.content-page');
+            const pages = document.querySelectorAll('.content-page, .user-profile-page');
             pages.forEach(p => p.classList.remove('active'));
             
             // Show selected page
@@ -1670,6 +1785,11 @@
             const dropdown = document.getElementById('moreDropdown');
             if(event.target.closest('.more-options') === null && !event.target.closest('.more-dropdown')) {
                 dropdown.style.display = 'none';
+            }
+            
+            const userDropdown = document.getElementById('userMoreDropdown');
+            if(event.target.closest('.more-options') === null && !event.target.closest('.more-dropdown')) {
+                userDropdown.style.display = 'none';
             }
         }
 
